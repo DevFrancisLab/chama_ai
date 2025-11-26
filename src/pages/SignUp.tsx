@@ -27,8 +27,9 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const strength = passwordStrength(password);
-  const passwordOk = strength.score >= 3 && password.length >= 8;
-  const canSubmit = firstName && phone && passwordOk && confirm === password && terms;
+  // Require a minimum of 8 characters for signup to keep UX friendly. Strength indicators remain informative.
+  const passwordOk = password.length >= 8;
+  const canSubmit = Boolean(firstName && phone && passwordOk && confirm === password && terms);
 
   function submit(e?: React.FormEvent) {
     e?.preventDefault();

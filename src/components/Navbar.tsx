@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,11 +11,11 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
+            <div className="flex items-center">
             <div className="md:hidden mr-2">
               <SidebarTrigger />
             </div>
-            <a href="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <img
                 src="/chama_ai_logo.png"
                 alt="Chama AI logo"
@@ -24,7 +25,7 @@ const Navbar = () => {
               <span className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 Chama AI
               </span>
-            </a>
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
@@ -37,16 +38,16 @@ const Navbar = () => {
             <a href="#testimonials" className="text-foreground/80 hover:text-foreground transition-smooth">
               Testimonials
             </a>
-            <a href="/signin">
+            <Link to="/signin">
               <Button variant="outline" size="sm">
                 Sign In
               </Button>
-            </a>
-            <a href="/signup">
+            </Link>
+            <Link to="/signup">
               <Button size="sm" className="bg-primary hover:bg-primary-dark">
                 Get Started Free
               </Button>
-            </a>
+            </Link>
           </div>
 
           <div className="md:hidden">
@@ -86,16 +87,16 @@ const Navbar = () => {
             >
               Testimonials
             </a>
-            <a href="/signin" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/signin" onClick={() => setIsMenuOpen(false)}>
               <Button variant="outline" className="w-full">
                 Sign In
               </Button>
-            </a>
-            <a href="/signup" onClick={() => setIsMenuOpen(false)}>
+            </Link>
+            <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
               <Button className="w-full bg-primary hover:bg-primary-dark">
                 Get Started Free
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       )}

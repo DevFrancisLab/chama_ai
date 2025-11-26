@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function validateEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -119,7 +119,7 @@ export default function SignIn() {
                   <Button variant="outline" className="flex-1">Apple</Button>
                 </div>
                 <div className="text-center text-sm">
-                  Don't have an account? <a href="/signup" className="text-primary">Sign Up</a>
+                  Don't have an account? <Link to="/signup" className="text-primary">Sign Up</Link>
                 </div>
               </div>
             </div>

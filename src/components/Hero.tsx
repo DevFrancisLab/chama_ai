@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Play, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
 
 const Hero = () => {
@@ -30,7 +31,7 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="/signup">
+              <Link to="/signup">
                 <Button 
                   size="lg" 
                   className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-soft text-base font-semibold group"
@@ -38,7 +39,7 @@ const Hero = () => {
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-smooth" />
                 </Button>
-              </a>
+              </Link>
               
               <Button 
                 size="lg" 

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CallToAction = () => {
   return (
@@ -24,7 +25,7 @@ const CallToAction = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="/signup">
+              <Link to="/signup">
                 <Button 
                   size="lg" 
                   className="bg-white text-primary hover:bg-white/90 shadow-2xl text-base font-semibold group px-8"
@@ -32,7 +33,7 @@ const CallToAction = () => {
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-smooth" />
                 </Button>
-              </a>
+              </Link>
               
               <Button 
                 size="lg" 
