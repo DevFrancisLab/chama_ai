@@ -33,9 +33,11 @@ const Navbar = () => {
             <a href="#testimonials" className="text-foreground/80 hover:text-foreground transition-smooth">
               Testimonials
             </a>
-            <Button variant="outline" size="sm">
-              Sign In
-            </Button>
+            <a href="/dashboard">
+              <Button variant="outline" size="sm">
+                Sign In
+              </Button>
+            </a>
             <Button size="sm" className="bg-primary hover:bg-primary-dark">
               Get Started Free
             </Button>
@@ -78,9 +80,11 @@ const Navbar = () => {
             >
               Testimonials
             </a>
-            <Button variant="outline" className="w-full">
-              Sign In
-            </Button>
+            <a href="/dashboard" onClick={() => setIsMenuOpen(false)}>
+              <Button variant="outline" className="w-full">
+                Sign In
+              </Button>
+            </a>
             <Button className="w-full bg-primary hover:bg-primary-dark">
               Get Started Free
             </Button>
