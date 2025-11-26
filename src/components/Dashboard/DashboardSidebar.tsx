@@ -25,7 +25,9 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "Overview", url: "/", icon: LayoutDashboard },
+  // Overview should point to the dashboard route so the sidebar's active
+  // state matches the main Dashboard content.
+  { title: "Overview", url: "/dashboard", icon: LayoutDashboard },
   { title: "Contributions", url: "/contributions", icon: Wallet },
   { title: "Loans", url: "/loans", icon: DollarSign },
   { title: "Members", url: "/members", icon: Users },
