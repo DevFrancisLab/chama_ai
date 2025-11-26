@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { PanelLeft } from "lucide-react";
+import { PanelLeft, ChevronLeft } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -218,7 +218,16 @@ Sidebar.displayName = "Sidebar";
 
 const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.ComponentProps<typeof Button>>(
   ({ className, onClick, ...props }, ref) => {
-    const { toggleSidebar } = useSidebar();
+    // Use context directly so this component can safely render even when
+    // there's no SidebarProvider (for example on the public landing page).
+    // The exported `useSidebar` helper throws if used outside a provider,
+    // so guard access here.
+  const ctx = React.useContext(SidebarContext);
+
+    // If there's no provider, render nothing (avoids throwing on landing page).
+    if (!ctx) return null;
+
+    const { toggleSidebar, state } = ctx;
 
     return (
       <Button
@@ -233,7 +242,7 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
         }}
         {...props}
       >
-        <PanelLeft />
+        <ChevronLeft className={cn("w-4 h-4 transition-transform", state === "collapsed" ? "rotate-180" : "rotate-0")} />
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
     );

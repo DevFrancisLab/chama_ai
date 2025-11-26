@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -10,6 +11,9 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
+            <div className="md:hidden mr-2">
+              <SidebarTrigger />
+            </div>
             <a href="/" className="flex items-center gap-3">
               <img
                 src="/chama_ai_logo.png"
