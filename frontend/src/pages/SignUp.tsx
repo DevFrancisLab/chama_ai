@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+// Avoid react-query here to prevent runtime mismatch in the dev bundle.
 
 function passwordStrength(pw: string) {
   const length = pw.length >= 8;
@@ -24,6 +26,7 @@ export default function SignUp() {
   const [creatingChama, setCreatingChama] = React.useState(false);
   const [terms, setTerms] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [serverErrors, setServerErrors] = React.useState<Record<string, unknown> | string | null>(null);
   const navigate = useNavigate();
 
   const strength = passwordStrength(password);
@@ -31,15 +34,48 @@ export default function SignUp() {
   const passwordOk = password.length >= 8;
   const canSubmit = Boolean(firstName && phone && passwordOk && confirm === password && terms);
 
+  async function performSignup(payload: Record<string, unknown>) {
+    try {
+      setLoading(true);
+      const res = await axios.post('/api/auth/signup/', payload, { headers: { 'Content-Type': 'application/json' }, withCredentials: true });
+      const data = res.data;
+      if (data?.access) {
+        try {
+          localStorage.setItem('accessToken', data.access);
+          localStorage.setItem('refreshToken', data.refresh);
+        } catch (e) {
+          // ignore storage errors
+        }
+        toast({ title: 'Account created', description: 'You are signed in' });
+        navigate('/dashboard');
+        return;
+      }
+      toast({ title: "Account created", description: "Please sign in to continue" });
+      navigate("/signin");
+    } catch (err) {
+      const e = err as unknown as { response?: { data?: unknown }; message?: string };
+      const resp = e?.response?.data ?? e?.message ?? 'Signup failed';
+      setServerErrors(resp as any);
+      setLoading(false);
+    }
+  }
+
   function submit(e?: React.FormEvent) {
     e?.preventDefault();
+    setServerErrors(null);
     if (!canSubmit) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast({ title: "Account created", description: "Welcome to Chama AI" });
-      navigate("/dashboard");
-    }, 1000);
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      phone,
+      email,
+      password,
+      create_chama: creatingChama,
+      chama_name: '',
+      chama_type: '',
+    };
+    void performSignup(payload);
   }
 
   return (
@@ -111,6 +147,17 @@ export default function SignUp() {
 
             <div className="mt-4 flex flex-col gap-2">
               <Button disabled={!canSubmit || loading} type="submit">{loading ? "Creating..." : "Create Account"}</Button>
+              {serverErrors && (
+                <div className="text-sm text-destructive mt-2">
+                  {typeof serverErrors === 'object'
+                    ? Object.entries(serverErrors).map(([k, v]) => (
+                        <div key={k}>
+                          <strong>{k}:</strong> {Array.isArray(v) ? v.join(', ') : String(v)}
+                        </div>
+                      ))
+                    : String(serverErrors)}
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <div className="flex-1 h-px bg-border" />
                 <div className="text-xs text-muted-foreground">Or continue with</div>

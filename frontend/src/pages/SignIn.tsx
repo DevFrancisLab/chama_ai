@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
+import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
+// We avoid using react-query here to prevent a runtime mismatch in the dev bundle.
 
 function validateEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -22,6 +24,7 @@ export default function SignIn() {
   const [remember, setRemember] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [serverError, setServerError] = React.useState<Record<string, unknown> | string | null>(null);
   const [capsOn, setCapsOn] = React.useState(false);
   const navigate = useNavigate();
 
@@ -42,21 +45,38 @@ export default function SignIn() {
     }
   }
 
+  async function performLogin(payload: { identifier: string; password: string }) {
+    try {
+      setLoading(true);
+      const res = await axios.post('/api/token/', { username: payload.identifier, password: payload.password }, { headers: { 'Content-Type': 'application/json' } });
+      const data = res.data;
+      try {
+        if (data?.access) localStorage.setItem('accessToken', data.access);
+        if (data?.refresh) localStorage.setItem('refreshToken', data.refresh);
+      } catch (e) {
+        // ignore storage errors
+      }
+      toast({ title: 'Signed in', description: 'Welcome back!' });
+      setLoading(false);
+      navigate('/dashboard');
+    } catch (err) {
+      const e = err as unknown as { response?: { data?: unknown }; message?: string };
+      const resp = e?.response?.data ?? e?.message ?? 'Login failed';
+      setServerError(resp as any);
+      setLoading(false);
+    }
+  }
+
   function submit(e?: React.FormEvent) {
     e?.preventDefault();
     setError(null);
+    setServerError(null);
     if (!formValid) {
-      setError("Please provide valid credentials");
+      setError('Please provide valid credentials');
       return;
     }
-
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      // demo success
-      toast({ title: "Signed in", description: "Welcome back!" });
-      navigate("/dashboard");
-    }, 900);
+    void performLogin({ identifier, password });
   }
 
   return (
