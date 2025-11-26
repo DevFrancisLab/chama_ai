@@ -37,14 +37,16 @@ const Navbar = () => {
             <a href="#testimonials" className="text-foreground/80 hover:text-foreground transition-smooth">
               Testimonials
             </a>
-            <a href="/dashboard">
+            <a href="/signin">
               <Button variant="outline" size="sm">
                 Sign In
               </Button>
             </a>
-            <Button size="sm" className="bg-primary hover:bg-primary-dark">
-              Get Started Free
-            </Button>
+            <a href="/signup">
+              <Button size="sm" className="bg-primary hover:bg-primary-dark">
+                Get Started Free
+              </Button>
+            </a>
           </div>
 
           <div className="md:hidden">
@@ -84,14 +86,16 @@ const Navbar = () => {
             >
               Testimonials
             </a>
-            <a href="/dashboard" onClick={() => setIsMenuOpen(false)}>
+            <a href="/signin" onClick={() => setIsMenuOpen(false)}>
               <Button variant="outline" className="w-full">
                 Sign In
               </Button>
             </a>
-            <Button className="w-full bg-primary hover:bg-primary-dark">
-              Get Started Free
-            </Button>
+            <a href="/signup" onClick={() => setIsMenuOpen(false)}>
+              <Button className="w-full bg-primary hover:bg-primary-dark">
+                Get Started Free
+              </Button>
+            </a>
           </div>
         </div>
       )}
